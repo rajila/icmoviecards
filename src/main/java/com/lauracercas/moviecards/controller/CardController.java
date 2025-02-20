@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -26,8 +27,11 @@ public class CardController {
 
 
     private final MovieService movieService;
-    private final ActorService actorService;
+    //private final ActorService actorService;
     private final CardService cardService;
+
+    @Autowired
+    ActorService actorService;
 
     public CardController(MovieService movieService, ActorService actorService, CardService cardService) {
         this.movieService = movieService;
