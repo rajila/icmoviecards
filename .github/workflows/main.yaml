@@ -102,7 +102,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'moviecards-rdajila'
+          app-name: 'moviecards-ajila'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_77378D8E7C95419791B3871227EEF71D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3FC3B0C4BA1B4A7B846D77FAFE161A50 }}
