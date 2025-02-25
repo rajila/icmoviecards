@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,9 +23,9 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
-    private final String lblMovie = "movie";
-    private final String lblTitle = "title";
-    private final String lblPageForm = "movies/form";
+    private static final String lblMovie = "movie";
+    private static final String lblTitle = "title";
+    private static final String lblPageForm = "movies/form";
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
@@ -48,7 +47,6 @@ public class MovieController {
     @PostMapping("saveMovie")
     public String saveMovie(Movie movie, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            //return lblPageForm;
             Movie movieSaved = movieService.save(movie);
             if (movieSaved.getId() != null) {
                 model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
@@ -58,15 +56,6 @@ public class MovieController {
             model.addAttribute(lblMovie, movieSaved);
             model.addAttribute(lblTitle, Messages.EDIT_MOVIE_TITLE);
         }
-//        Movie movieSaved = movieService.save(movie);
-//        if (movieSaved.getId() != null) {
-//            model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
-//        } else {
-//            model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
-//        }
-//
-//        model.addAttribute(lblMovie, movieSaved);
-//        model.addAttribute(lblTitle, Messages.EDIT_MOVIE_TITLE);
         return lblPageForm;
     }
 

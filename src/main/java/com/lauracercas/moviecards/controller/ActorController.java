@@ -21,9 +21,9 @@ import java.util.List;
 public class ActorController {
 
     private final ActorService actorService;
-    private final String lblActor = "actor";
-    private final String lblTitle = "title";
-    private final String lblPageForm = "actors/form";
+    private static final String lblActor = "actor";
+    private static final String lblTitle = "title";
+    private static final String lblPageForm = "actors/form";
 
     public ActorController(ActorService actorService) {
         this.actorService = actorService;
@@ -45,7 +45,6 @@ public class ActorController {
     @PostMapping("saveActor")
     public String saveActor(Actor actor, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            //return lblPageForm;
             Actor actorSaved = actorService.save(actor);
             if (actor.getId() != null) {
                 model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
@@ -56,15 +55,6 @@ public class ActorController {
             model.addAttribute(lblActor, actorSaved);
             model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
         }
-//        Actor actorSaved = actorService.save(actor);
-//        if (actor.getId() != null) {
-//            model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
-//        } else {
-//            model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
-//        }
-//
-//        model.addAttribute(lblActor, actorSaved);
-//        model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
         return lblPageForm;
     }
 
