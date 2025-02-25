@@ -7,10 +7,7 @@ import com.lauracercas.moviecards.util.Messages;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +21,9 @@ import java.util.List;
 public class ActorController {
 
     private final ActorService actorService;
+    private final String lblActor = "actor";
+    private final String lblTitle = "title";
+    private final String lblPageForm = "actors/form";
 
     public ActorController(ActorService actorService) {
         this.actorService = actorService;
@@ -37,38 +37,47 @@ public class ActorController {
 
     @GetMapping("actors/new")
     public String newActor(Model model) {
-        model.addAttribute("actor", new Actor());
-        model.addAttribute("title", Messages.NEW_ACTOR_TITLE);
-        return "actors/form";
+        model.addAttribute(lblActor, new Actor());
+        model.addAttribute(lblTitle, Messages.NEW_ACTOR_TITLE);
+        return lblPageForm;
     }
 
     @PostMapping("saveActor")
-    public String saveActor(@ModelAttribute Actor actor, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "actors/form";
-        }
-        Actor actorSaved = actorService.save(actor);
-        if (actor.getId() != null) {
-            model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
-        } else {
-            model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
-        }
+    public String saveActor(Actor actor, BindingResult result, Model model) {
+        if (!result.hasErrors()) {
+            //return lblPageForm;
+            Actor actorSaved = actorService.save(actor);
+            if (actor.getId() != null) {
+                model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
+            } else {
+                model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
+            }
 
-        model.addAttribute("actor", actorSaved);
-        model.addAttribute("title", Messages.EDIT_ACTOR_TITLE);
-        return "actors/form";
+            model.addAttribute(lblActor, actorSaved);
+            model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
+        }
+//        Actor actorSaved = actorService.save(actor);
+//        if (actor.getId() != null) {
+//            model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
+//        } else {
+//            model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
+//        }
+//
+//        model.addAttribute(lblActor, actorSaved);
+//        model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
+        return lblPageForm;
     }
 
     @GetMapping("editActor/{actorId}")
     public String editActor(@PathVariable Integer actorId, Model model) {
         Actor actor = actorService.getActorById(actorId);
         List<Movie> movies = actor.getMovies();
-        model.addAttribute("actor", actor);
+        model.addAttribute(lblActor, actor);
         model.addAttribute("movies", movies);
 
-        model.addAttribute("title", Messages.EDIT_ACTOR_TITLE);
+        model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
 
-        return "actors/form";
+        return lblPageForm;
     }
 
 
