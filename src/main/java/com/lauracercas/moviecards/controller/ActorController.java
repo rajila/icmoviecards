@@ -21,9 +21,9 @@ import java.util.List;
 public class ActorController {
 
     private final ActorService actorService;
-    private static final String lblActor = "actor";
-    private static final String lblTitle = "title";
-    private static final String lblPageForm = "actors/form";
+    private static final String LBLACTOR = "actor";
+    private static final String LBLTITLE = "title";
+    private static final String LBLFORM = "actors/form";
 
     public ActorController(ActorService actorService) {
         this.actorService = actorService;
@@ -37,9 +37,9 @@ public class ActorController {
 
     @GetMapping("actors/new")
     public String newActor(Model model) {
-        model.addAttribute(lblActor, new Actor());
-        model.addAttribute(lblTitle, Messages.NEW_ACTOR_TITLE);
-        return lblPageForm;
+        model.addAttribute(LBLACTOR, new Actor());
+        model.addAttribute(LBLTITLE, Messages.NEW_ACTOR_TITLE);
+        return LBLFORM;
     }
 
     @PostMapping("saveActor")
@@ -52,22 +52,22 @@ public class ActorController {
                 model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
             }
 
-            model.addAttribute(lblActor, actorSaved);
-            model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
+            model.addAttribute(LBLACTOR, actorSaved);
+            model.addAttribute(LBLTITLE, Messages.EDIT_ACTOR_TITLE);
         }
-        return lblPageForm;
+        return LBLFORM;
     }
 
     @GetMapping("editActor/{actorId}")
     public String editActor(@PathVariable Integer actorId, Model model) {
         Actor actor = actorService.getActorById(actorId);
         List<Movie> movies = actor.getMovies();
-        model.addAttribute(lblActor, actor);
+        model.addAttribute(LBLACTOR, actor);
         model.addAttribute("movies", movies);
 
-        model.addAttribute(lblTitle, Messages.EDIT_ACTOR_TITLE);
+        model.addAttribute(LBLTITLE, Messages.EDIT_ACTOR_TITLE);
 
-        return lblPageForm;
+        return LBLFORM;
     }
 
 

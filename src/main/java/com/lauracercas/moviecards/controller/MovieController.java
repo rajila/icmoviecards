@@ -23,9 +23,9 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
-    private static final String lblMovie = "movie";
-    private static final String lblTitle = "title";
-    private static final String lblPageForm = "movies/form";
+    private static final String LBLMOVIE = "movie";
+    private static final String LBLTITLE = "title";
+    private static final String LBLFORM = "movies/form";
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
@@ -39,9 +39,9 @@ public class MovieController {
 
     @GetMapping("movies/new")
     public String newMovie(Model model) {
-        model.addAttribute(lblMovie, new Movie());
-        model.addAttribute(lblTitle, Messages.NEW_MOVIE_TITLE);
-        return lblPageForm;
+        model.addAttribute(LBLMOVIE, new Movie());
+        model.addAttribute(LBLTITLE, Messages.NEW_MOVIE_TITLE);
+        return LBLFORM;
     }
 
     @PostMapping("saveMovie")
@@ -53,22 +53,22 @@ public class MovieController {
             } else {
                 model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
             }
-            model.addAttribute(lblMovie, movieSaved);
-            model.addAttribute(lblTitle, Messages.EDIT_MOVIE_TITLE);
+            model.addAttribute(LBLMOVIE, movieSaved);
+            model.addAttribute(LBLTITLE, Messages.EDIT_MOVIE_TITLE);
         }
-        return lblPageForm;
+        return LBLFORM;
     }
 
     @GetMapping("editMovie/{movieId}")
     public String editMovie(@PathVariable Integer movieId, Model model) {
         Movie movie = movieService.getMovieById(movieId);
         List<Actor> actors = movie.getActors();
-        model.addAttribute(lblMovie, movie);
+        model.addAttribute(LBLMOVIE, movie);
         model.addAttribute("actors", actors);
 
-        model.addAttribute(lblTitle, Messages.EDIT_MOVIE_TITLE);
+        model.addAttribute(LBLTITLE, Messages.EDIT_MOVIE_TITLE);
 
-        return lblPageForm;
+        return LBLFORM;
     }
 
 
