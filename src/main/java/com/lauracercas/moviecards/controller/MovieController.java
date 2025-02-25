@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,6 +23,9 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private static final String LBLMOVIE = "movie";
+    private static final String LBLTITLE = "title";
+    private static final String LBLFORM = "movies/form";
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
@@ -37,38 +39,36 @@ public class MovieController {
 
     @GetMapping("movies/new")
     public String newMovie(Model model) {
-        model.addAttribute("movie", new Movie());
-        model.addAttribute("title", Messages.NEW_MOVIE_TITLE);
-        return "movies/form";
+        model.addAttribute(LBLMOVIE, new Movie());
+        model.addAttribute(LBLTITLE, Messages.NEW_MOVIE_TITLE);
+        return LBLFORM;
     }
 
     @PostMapping("saveMovie")
-    public String saveMovie(@ModelAttribute Movie movie, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "movies/form";
+    public String saveMovie(Movie movie, BindingResult result, Model model) {
+        if (!result.hasErrors()) {
+            Movie movieSaved = movieService.save(movie);
+            if (movieSaved.getId() != null) {
+                model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
+            } else {
+                model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
+            }
+            model.addAttribute(LBLMOVIE, movieSaved);
+            model.addAttribute(LBLTITLE, Messages.EDIT_MOVIE_TITLE);
         }
-        Movie movieSaved = movieService.save(movie);
-        if (movieSaved.getId() != null) {
-            model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
-        } else {
-            model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
-        }
-
-        model.addAttribute("movie", movieSaved);
-        model.addAttribute("title", Messages.EDIT_MOVIE_TITLE);
-        return "movies/form";
+        return LBLFORM;
     }
 
     @GetMapping("editMovie/{movieId}")
     public String editMovie(@PathVariable Integer movieId, Model model) {
         Movie movie = movieService.getMovieById(movieId);
         List<Actor> actors = movie.getActors();
-        model.addAttribute("movie", movie);
+        model.addAttribute(LBLMOVIE, movie);
         model.addAttribute("actors", actors);
 
-        model.addAttribute("title", Messages.EDIT_MOVIE_TITLE);
+        model.addAttribute(LBLTITLE, Messages.EDIT_MOVIE_TITLE);
 
-        return "movies/form";
+        return LBLFORM;
     }
 
 

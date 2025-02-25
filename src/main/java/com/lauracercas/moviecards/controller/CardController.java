@@ -10,7 +10,6 @@ import com.lauracercas.moviecards.util.Messages;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +26,6 @@ public class CardController {
 
 
     private final MovieService movieService;
-    //private final ActorService actorService;
     private final CardService cardService;
 
     @Autowired
@@ -56,7 +54,7 @@ public class CardController {
     }
 
     @PostMapping("register")
-    public String registerCard(@ModelAttribute Card card, Model model) {
+    public String registerCard(Card card, Model model) {
         String result = cardService.registerActorInMovie(card);
 
         model.addAttribute("message", result);
